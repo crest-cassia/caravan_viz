@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.grid-background {
+  fill: #ddd;
+}
+.axis path, .axis line{
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.grid {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+.brush {
+  stroke: #000;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+#time_slider .axis .domain {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: 10px;
+  stroke-linecap: round;
+}
+#time_slider .axis .halo {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 8px;
+  stroke-linecap: round;
+}
+#time_slider .slider .handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: .5;
+  stroke-width: 1.25px;
+  cursor: crosshair;
+}
+	</style>
+<title>Sequential Scatter Plot</title>
+</head>
+<body>
+  <div id="plot"></div>
+  <label for="xkey">X-Axis</label>
+  <select id="xkey"></select>
+  <label for="ykey">Y-Axis</label>
+  <select id="ykey"></select>
+  <div id="time_slider"></div>
+  <div id="brushes"></div>
+
+  <script src="scatter_sequence/scatter_plot.js" ></script>
+  <script src="scatter_sequence/slider.js" ></script>
+  <script src="scatter_sequence/snapping_brush.js" ></script>
+	<script src="scatter_sequence/scatter_sequence.js" ></script>
+  <script>
+    document.body.onload = function() {
+      new ScatterSequence('#plot');
+    }
+  </script>
+</body>
+</html>

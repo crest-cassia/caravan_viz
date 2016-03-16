@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 960px;
+}
+.axis text {
+  font: 10px sans-serif;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.bar {
+  fill: steelblue;
+  fill-opacity: .9;
+}
+.x.axis path {
+  display: none;
+}
+span#tooltip{
+  position: absolute;
+  z-index: 10;
+  visibility: hidden;
+  padding: 0 5px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  background-color: #333;
+  color: #fff;
+  font-size: 11px;
+  opacity: 0.8;
+}
+	</style>
+<title>Timeline Visualizer</title>
+</head>
+<body>
+	<div id='plot' ></div>
+	<span id="tooltip"></span>
+	<script src="timeline/plot.js" ></script>
+</body>
+</html>
