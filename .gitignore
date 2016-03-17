@@ -1,6 +1,2 @@
-# input files
-runs.json
-parameter_sets.json
-
 # type definition files for TypeScript
 typings
