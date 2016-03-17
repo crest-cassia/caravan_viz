@@ -100,6 +100,9 @@ class BoxPlot {
 }
 
 document.body.onload = function() {
+  d3.text('/filling_rate', (err:any, data: string) => {
+    d3.select('#filling_rate').text(`filling rate: ${Number(data)*100.0} %`);
+  });
   var box = new BoxPlot('#plot');
   box.build('/runs');
 }

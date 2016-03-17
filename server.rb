@@ -58,6 +58,10 @@ get '/runs' do
   $runs.to_json
 end
 
+get '/filling_rate' do
+  calc_filling_rate($runs).to_s
+end
+
 def calc_filling_rate(runs)
   min_start_at = runs.map {|run| run["startAt"] }.min
   max_finish_at = runs.map {|run| run["finishAt"] }.max
