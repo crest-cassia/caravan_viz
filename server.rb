@@ -12,6 +12,7 @@ end
 
 unless ARGV.size == 2 or ARGV.size == 1
   $stderr.puts "Usage: ruby server.rb runs.json [parameter_sets.json]"
+  $stderr.puts "    or ruby server.rb dump.bin"
   raise "invalid argument"
 end
 
@@ -23,9 +24,13 @@ def load_json
   $runs = JSON.parse( File.open(ARGV[0]).read ).select {|run| run["finishAt"] > 0 }
   $parameter_sets = JSON.parse( File.open(ARGV[1]).read ) if ARGV[1]
 
-  min_start_at = $runs.map {|run| run["startAt"] }.min
-  $runs.each {|run| run["startAt"] = (run["startAt"] - min_start_at)/1000.0; run["finishAt"] = (run["finishAt"] - min_start_at)/1000.0 }
+  normalize_runs( $runs )
   set_averaged_result_to_ps( $parameter_sets, $runs )
+end
+
+def normalize_runs( runs )
+  min_start_at = $runs.map {|run| run["startAt"] }.min
+  runs.each {|run| run["startAt"] = (run["startAt"] - min_start_at)/1000.0; run["finishAt"] = (run["finishAt"] - min_start_at)/1000.0 }
 end
 
 def set_averaged_result_to_ps(parameter_sets, runs)
@@ -47,7 +52,16 @@ def set_averaged_result_to_ps(parameter_sets, runs)
   parameter_sets.select! {|ps| ps["result"] }
 end
 
-load_json
+if ARGV[0] =~ /\.json$/
+  load_json
+else
+  require_relative 'caravan_dump'
+  dump = CARAVAN_DUMP.new(ARGV[0])
+  $parameter_sets = dump.parameter_sets
+  $runs = dump.runs
+  normalize_runs( $runs )
+  set_averaged_result_to_ps( $parameter_sets, $runs )
+end
 
 #########################
 ### timeline ############
