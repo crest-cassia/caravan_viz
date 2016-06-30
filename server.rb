@@ -58,7 +58,7 @@ else
   require_relative 'caravan_dump'
   dump = CARAVAN_DUMP.new(ARGV[0])
   $parameter_sets = dump.parameter_sets
-  $runs = dump.runs
+  $runs = dump.runs.select {|run| run["finishAt"] > 0 }
   normalize_runs( $runs )
   set_averaged_result_to_ps( $parameter_sets, $runs )
 end
