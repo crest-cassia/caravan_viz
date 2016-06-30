@@ -1,4 +1,5 @@
 require 'pp'
+require 'pry'
 
 class CARAVAN_DUMP
 
@@ -62,6 +63,6 @@ end
 
 if __FILE__ == $0
   dump = CARAVAN_DUMP.new( ARGV[0] )
-  pp dump
+  binding.pry
 end
 
