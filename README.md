@@ -33,10 +33,16 @@ The server runs on sinatra. Install dependent gems:
 bundle
 ```
 
-Then, run sinatra server:
+Then, run sinatra server giving input files as command line arguments:
 
 ```
 bundle exec ruby server.rb runs.json parameter_sets.json
+```
+
+or
+
+```
+bundle exec ruby server.rb dump.bin
 ```
 
 Access the following pages to see the results. Make sure that typescripts are compiled to JS beforehand.
