@@ -42,6 +42,12 @@ span#tooltip{
 <body>
   <a href="/">Back</a>
   <div id='filling_rate'></div>
+  <p id="place_filter">
+    <label for="place_range">Range of place ID to display</label>
+    <input type="text" id="place_range" value="0" />
+    <button type="button" id="place_range_update">Update</button>
+    (ex. 0-100)
+  </p>
   <div id='plot' ></div>
   <span id="tooltip"></span>
   <script src="timeline/plot.js" ></script>

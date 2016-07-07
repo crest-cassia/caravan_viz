@@ -106,3 +106,10 @@ document.body.onload = function() {
   var box = new BoxPlot('#plot');
   box.build('/runs');
 }
+
+d3.select('#place_range_update').on('click', function() {
+  var url = '/runs?place=' + d3.select('#place_range')[0][0].value;
+  d3.select('#plot').selectAll("*").remove();
+  var box = new BoxPlot('#plot');
+  box.build(url);
+});

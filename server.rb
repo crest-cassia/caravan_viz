@@ -68,9 +68,22 @@ end
 ### timeline ############
 #########################
 
+# return runs in JSON
+# filter out the runs based on the given parameter
+#   example: /runs?place=0-100
+#   => list of runs whose placeId is in [0,100]
 get '/runs' do
   content_type :json
-  $runs.to_json
+  place_range = []
+  if params["place"]
+    place_range = params["place"].split('-').map(&:to_i)
+  end
+  selected = $runs.select {|r|
+    place = r["placeId"]
+    (!place_range[0] || place >= place_range[0]) &&
+    (!place_range[1] || place <= place_range[1])
+  }
+  selected.to_json
 end
 
 get '/filling_rate' do
