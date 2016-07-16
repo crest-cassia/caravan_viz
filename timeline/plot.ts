@@ -38,7 +38,7 @@ class BoxPlot {
       
       this.xScale.domain( data.sort( (a,b)=>{return a.placeId-b.placeId;} ).map( (d)=>{return d.placeId.toString();} ) );
       this.yScale.domain([
-        d3.min(data, (d)=>{ return d.startAt;}),
+        0.0,
         d3.max(data, (d)=>{ return d.finishAt;})
       ]);
       
