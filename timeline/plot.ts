@@ -100,8 +100,10 @@ class BoxPlot {
 }
 
 document.body.onload = function() {
-  d3.text('/filling_rate', (err:any, data: string) => {
-    d3.select('#filling_rate').text(`filling rate: ${Number(data)*100.0} %`);
+  d3.json('/filling_rate', (err:any, data) => {
+    d3.select('#filling_rate').text(`filling rate: ${data["filling_rate"]*100.0} %`);
+    d3.select('#place_range').text(`place range: ${data["place_range"][0]} - ${data["place_range"][1]}`);
+    d3.select('#num_consumer_places').text(`# of consumer places: ${data["num_consumer_places"]}`);
   });
   var box = new BoxPlot('#plot');
   box.build('/runs');

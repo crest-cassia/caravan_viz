@@ -87,16 +87,19 @@ get '/runs' do
 end
 
 get '/filling_rate' do
-  calc_filling_rate($runs).to_s
+  calc_filling_rate_and_place_range($runs).to_json
 end
 
-def calc_filling_rate(runs)
+def calc_filling_rate_and_place_range(runs)
   min_start_at = runs.map {|run| run["startAt"] }.min
   max_finish_at = runs.map {|run| run["finishAt"] }.max
-  num_places = runs.uniq {|run| run["placeId"] }.size
+  places = runs.map {|run| run["placeId"] }.uniq
+  num_places = places.size
   duration = runs.inject(0) {|sum,run| sum + (run["finishAt"] - run["startAt"]) }
   filling_rate = duration.to_f / ((max_finish_at - min_start_at) * num_places)
-  filling_rate
+
+  place_range = places.minmax
+  {filling_rate: filling_rate, place_range: place_range, num_consumer_places: num_places}
 end
 
 #########################
