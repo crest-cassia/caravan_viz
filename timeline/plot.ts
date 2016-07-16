@@ -77,6 +77,7 @@ class BoxPlot {
           d3.select(this).style("opacity", .8);
           tooltip.style("visibility", "hidden");
         });
+      this.updatePlaceRange();
     });
   }
   
@@ -96,7 +97,13 @@ class BoxPlot {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Time");
-  }  
+  }
+
+  private updatePlaceRange() {
+    var domain = this.xScale.domain();
+    var s = `${domain[0]}-${domain[domain.length-1]}`;
+    d3.select('#place_range_input')[0][0].value = s;
+  }
 }
 
 document.body.onload = function() {
@@ -110,7 +117,7 @@ document.body.onload = function() {
 }
 
 d3.select('#place_range_update').on('click', function() {
-  var url = '/runs?place=' + d3.select('#place_range')[0][0].value;
+  var url = '/runs?place=' + d3.select('#place_range_input')[0][0].value;
   d3.select('#plot').selectAll("*").remove();
   var box = new BoxPlot('#plot');
   box.build(url);

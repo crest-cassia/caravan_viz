@@ -77,6 +77,8 @@ get '/runs' do
   place_range = []
   if params["place"]
     place_range = params["place"].split('-').map(&:to_i)
+  else
+    place_range = [0,300]   # default value
   end
   selected = $runs.select {|r|
     place = r["placeId"]
