@@ -12,18 +12,10 @@ class CARAVAN_DUMP
     @num_outputs = read_int64
 
     num_ps = read_int64
-    @parameter_sets = []
-    num_ps.times do |i|
-      ps = read_ps
-      @parameter_sets << ps
-    end
+    @parameter_sets = read_pss( num_ps )
 
     num_runs = read_int64
-    @runs = []
-    num_runs.times do |i|
-      run = read_run
-      @runs << run
-    end
+    @runs = read_runs( num_runs )
 
     raise unless @io.eof?
   end
@@ -37,27 +29,42 @@ class CARAVAN_DUMP
     BIG_ENDIAN ? b.unpack("q").first : b.reverse.unpack("q").first
   end
 
-  def read_ps
-    id = read_int64
-    point = Array.new( @num_params, 0 )
-    num_params.times do |i|
-      point[i] = read_int64
+  def read_pss( num_ps )
+    num_bytes_per_ps = 8 + 8*@num_params
+    b = @io.read( num_ps * num_bytes_per_ps )
+
+    pss = Array.new( num_ps ) do |i|
+      bytes = b[ (i*num_bytes_per_ps)..((i+1)*num_bytes_per_ps-1) ]
+      ps = read_ps_from_bytes(bytes)
     end
-    ps = {"id" => id, "point" => point }
-    return ps
+    pss
   end
 
-  def read_run
-    id = read_int64
-    parent_ps_id = read_int64
-    seed = read_int64
-    result = @io.read(8*@num_outputs).unpack("G#{@num_outputs}")
-    place_id = read_int64
-    start_at = read_int64
-    finish_at = read_int64
+  def read_ps_from_bytes(b)
+    id = BIG_ENDIAN ? b[0..7].unpack("q").first : b[0..7].reverse.unpack("q").first
+    point = BIG_ENDIAN ? b[8..-1].unpack("q#{@num_params}") : b[8..-1].reverse.unpack("q#{@num_params}").reverse
+    ps = {"id" => id, "point" => point }
+    ps
+  end
+
+  def read_runs(num_runs)
+    num_bytes_per_run = 8 * (3+@num_outputs+3)
+    b = @io.read( num_runs * num_bytes_per_run )
+
+    runs = Array.new( num_runs ) do |i|
+      bytes = b[ (i*num_bytes_per_run)..((i+1)*num_bytes_per_run-1) ]
+      run = read_run_from_bytes(bytes)
+    end
+    runs
+  end
+
+  def read_run_from_bytes( b )
+    id, parent_ps_id, seed = BIG_ENDIAN ? b[0..23].unpack("qqq") : b[0..23].reverse.unpack("qqq").reverse
+    result = b[24..-25].unpack("G#{@num_outputs}")
+    place_id, start_at, finish_at = BIG_ENDIAN ? b[-24..-1].unpack("qqq") : b[-24..-1].reverse.unpack("qqq").reverse
     run = {"id"=>id, "parentPSId"=>parent_ps_id, "seed"=>seed, "result"=>result,
            "placeId"=>place_id, "startAt"=>start_at, "finishAt"=>finish_at}
-    return run
+    run
   end
 end
 
