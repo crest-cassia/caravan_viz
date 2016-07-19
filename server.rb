@@ -57,11 +57,14 @@ if ARGV[0] =~ /\.json$/
   load_json
 else
   require_relative 'caravan_dump'
+  $stderr.puts "Loading #{ARGV[0]}"
   dump = CARAVAN_DUMP.new(ARGV[0])
   $parameter_sets = dump.parameter_sets
   $runs = dump.runs
+  $stderr.puts "Normalizing results"
   normalize_runs( $runs )
   set_averaged_result_to_ps( $parameter_sets, $runs )
+  $stderr.puts "Initialization finished"
 end
 
 #########################
@@ -89,10 +92,10 @@ get '/runs' do
 end
 
 get '/filling_rate' do
-  calc_filling_rate_and_place_range($runs).to_json
+  calc_filling_rate_and_place_range($runs, $parameter_sets).to_json
 end
 
-def calc_filling_rate_and_place_range(runs)
+def calc_filling_rate_and_place_range(runs, ps)
   min_start_at = runs.map {|run| run["startAt"] }.min
   max_finish_at = runs.map {|run| run["finishAt"] }.max
   places = runs.map {|run| run["placeId"] }.uniq
@@ -101,7 +104,7 @@ def calc_filling_rate_and_place_range(runs)
   filling_rate = duration.to_f / ((max_finish_at - min_start_at) * num_places)
 
   place_range = places.minmax
-  {filling_rate: filling_rate, place_range: place_range, num_consumer_places: num_places}
+  {filling_rate: filling_rate, place_range: place_range, num_consumer_places: num_places, num_runs: runs.size, num_parameter_sets: ps.size}
 end
 
 #########################
