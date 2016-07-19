@@ -30,7 +30,7 @@ end
 
 def normalize_runs( runs )
   runs = runs.select {|run| run["finishAt"] > 0 }
-  min_start_at = $runs.map {|run| run["startAt"] }.min
+  min_start_at = runs.map {|run| run["startAt"] }.min
   runs.each {|run| run["startAt"] = (run["startAt"] - min_start_at)/1000.0; run["finishAt"] = (run["finishAt"] - min_start_at)/1000.0 }
 end
 
