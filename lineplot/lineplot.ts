@@ -280,6 +280,7 @@ class Manager {
       if( i == x_key ) { this.sliders[i].disable(); }
       else { this.sliders[i].enable(); }
     }
+    this.redrawPlot();
   }
   
   private redrawPlot = () => {
