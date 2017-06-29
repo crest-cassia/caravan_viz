@@ -135,9 +135,11 @@ get '/filter' do
 
   target = Array.new( $parameter_sets.first["point"].size )
   params.each_pair do |key,val|
-    n = key[1..-1].to_i
-    v = val.to_i
-    target[n] = v
+    if key =~ /^x(\d+)$/
+      n = $1.to_i
+      v = val.to_i
+      target[n] = v
+    end
   end
   data = $parameter_sets.select do |ps|
     target.each_with_index.all? {|x,idx| x.nil? or ps["point"][idx] == x }
