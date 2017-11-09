@@ -7,7 +7,7 @@ require 'json'
 set :public_folder, File.dirname(__FILE__) + '/'
 
 get '/' do
-  redirect '/index.html'
+  redirect '/timeline.html'
 end
 
 unless ARGV.size == 1
