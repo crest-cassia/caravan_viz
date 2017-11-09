@@ -99,12 +99,24 @@ def calc_filling_rate_and_place_range(runs, ps)
   min_start_at = runs.map {|run| run["startAt"] }.min
   max_finish_at = runs.map {|run| run["finishAt"] }.max
   places = runs.map {|run| run["placeId"] }.uniq
+  #places.each {|place|
+  #  calc_filling_rate_and_place_range2(runs,ps,place)
+  #}
   num_places = places.size
   duration = runs.inject(0) {|sum,run| sum + (run["finishAt"] - run["startAt"]) }
   filling_rate = duration.to_f / ((max_finish_at - min_start_at) * num_places)
 
   place_range = places.minmax
   {filling_rate: filling_rate, place_range: place_range, num_consumer_places: num_places, num_runs: runs.size, num_parameter_sets: ps.size}
+end
+
+def calc_filling_rate_and_place_range2(runs, ps, place)
+  place2_runs = runs.select {|run| run["placeId"] == place }
+  min_start_at = place2_runs.map {|r| r["startAt"] }.min
+  max_finish_at = place2_runs.map {|r| r["finishAt"] }.max
+  duration = place2_runs.inject(0) {|sum,run| sum + (run["finishAt"] - run["startAt"]) }
+  filling_rate = duration.to_f / (max_finish_at - min_start_at)
+  $stderr.puts "filling_rate @ #{place}: #{filling_rate}"
 end
 
 #########################
