@@ -6,6 +6,10 @@ require 'json'
 
 set :public_folder, File.dirname(__FILE__) + '/'
 
+after do
+  cache_control :no_cache
+end
+
 get '/' do
   redirect '/timeline.html'
 end
