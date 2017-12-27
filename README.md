@@ -1,6 +1,6 @@
 # CARAVAN viz
 
-A visualizing tool for the task scheduling of CARAVAN.
+A tool for visualizing task scheduling of [CARAVAN](https://github.com/crest-cassia/caravan).
 
 ## Usage
 
@@ -26,6 +26,12 @@ Access the following pages to see the results.
 
 - http://localhost:4567
 
+You'll see the plots like the following.
+The horizontal and vertical axes indicates the index of places (processes) and time, respectively.
+Each bar indicates how long each task runs. If the bars are filled without gaps, it indicates the scheduling went well.
+
+![screenshot](screenshot.png)
+
 ## Notes for Developers
 
 We adopted Typescript. Typescript needs type definition file.
@@ -49,4 +55,5 @@ If you monitor the changes in ts file and would like to compile it whenever you 
 tsc -w timeline/plot.ts
 ```
 
-After you updated ts files, commit "js" files as well such that users can skip compilation.
+After you updated ts files, commit "js" files as well so that users can skip compilation.
+
