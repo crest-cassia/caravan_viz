@@ -5,6 +5,7 @@ require 'pry'
 require 'json'
 
 set :public_folder, File.dirname(__FILE__) + '/'
+set :static_cache_control, [:public, max_age: 0] #disable caching
 
 after do
   cache_control :no_cache

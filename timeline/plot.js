@@ -1,5 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
-var BoxPlot = (function () {
+var BoxPlot = /** @class */ (function () {
     function BoxPlot(elementId) {
         var margin = { top: 20, right: 20, bottom: 30, left: 40 };
         this.width = 1000 - margin.left - margin.right,
@@ -34,7 +34,7 @@ var BoxPlot = (function () {
                 .style("opacity", .8)
                 .on("mouseover", function (d) {
                 d3.select(this).style("opacity", 1);
-                var t = "id: " + d.id + ", time: " + d.startAt + " - " + d.finishAt + ", place: " + d.placeId + ", result: " + d.result;
+                var t = "id: " + d.id + ", time: " + d.startAt + " - " + d.finishAt + ", place: " + d.placeId + ", results: " + d.results;
                 tooltip.style("visibility", "visible")
                     .text(t);
             })

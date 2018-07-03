@@ -58,7 +58,7 @@ class BoxPlot {
         .on("mouseover", function(d) {
           d3.select(this).style("opacity", 1);
           var t: string =
-            `id: ${d.id}, time: ${d.startAt} - ${d.finishAt}, place: ${d.placeId}, result: ${d.result}`;
+            `id: ${d.id}, time: ${d.startAt} - ${d.finishAt}, place: ${d.placeId}, results: ${d.results}`;
           tooltip.style("visibility", "visible")
             .text(t);
         })
