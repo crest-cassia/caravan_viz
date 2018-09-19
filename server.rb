@@ -76,7 +76,7 @@ def calc_filling_rate_and_place_range(tasks)
   duration = tasks.inject(0) {|sum,run| sum + (run[:finishAt] - run[:startAt]) }
   filling_rate = duration.to_f / ((max_finish_at - min_start_at) * num_places)
   place_range = places.minmax
-  {filling_rate: filling_rate, place_range: place_range, num_consumer_places: num_places, num_runs: tasks.size}
+  {filling_rate: filling_rate, place_range: place_range, num_consumer_places: num_places, num_runs: tasks.size, max_finish_at: max_finish_at}
 end
 
 def calc_filling_rate_and_place_range2(tasks, place)
