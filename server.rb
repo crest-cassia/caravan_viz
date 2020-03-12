@@ -16,6 +16,11 @@ get '/' do
   redirect '/timeline.html'
 end
 
+get '/reload' do
+  load_input
+  redirect '/timeline.html'
+end
+
 unless ARGV.size == 1
   $stderr.puts "Usage: ruby server.rb tasks.bin"
   raise "invalid argument"
@@ -31,12 +36,15 @@ def nomralize_tasks( tasks )
   tasks.each {|t| t["start_at"] = (t["start_at"] - min_start_at)/1000.0; t["finish_at"] = (t["finish_at"] - min_start_at)/1000.0 }
 end
 
-# require_relative 'caravan_dump'
-$stderr.puts "Loading #{ARGV[0]}"
-$tasks = MessagePack.unpack( File.open(ARGV[0]).read ).map {|a| a[1]}
-$stderr.puts "Normalizing results"
-nomralize_tasks( $tasks )
-$stderr.puts "Initialization finished"
+def load_input
+  $stderr.puts "Loading #{ARGV[0]}"
+  $tasks = MessagePack.unpack( File.open(ARGV[0]).read ).map {|a| a[1]}
+  $stderr.puts "Normalizing results"
+  nomralize_tasks( $tasks )
+  $stderr.puts "Initialization finished"
+end
+
+load_input
 
 #########################
 ### timeline ############
