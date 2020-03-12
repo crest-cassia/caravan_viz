@@ -34,7 +34,7 @@ var BoxPlot = /** @class */ (function () {
                 .style("opacity", .8)
                 .on("mouseover", function (d) {
                 d3.select(this).style("opacity", 1);
-                var t = "id: " + d.id + ", time: " + d.start_at + " - " + d.finish_at + ", place: " + d.rank + ", output: " + d.output;
+                var t = "id: " + d.id + ", time: " + d.start_at + " - " + d.finish_at + ", place: " + d.rank + ", output: " + JSON.stringify(d.output);
                 tooltip.style("visibility", "visible")
                     .text(t);
             })
