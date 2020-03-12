@@ -1,9 +1,9 @@
 require 'pp'
-require_relative 'caravan_dump'
+require 'msgpack'
 
-d = CARAVAN_DUMP.load(ARGV[0])
+d = MessagePack.unpack( File.open(ARGV[0]).read ).map {|a| a[1]}
 
-elapsed = d.map {|t| (t[:finishAt]-t[:startAt]).to_f/1000 }
+elapsed = d.map {|t| (t["finish_at"]-t["start_at"]).to_f/1000 }
 histo = Hash.new(0)
 BIN = 100
 elapsed.each do |e|
