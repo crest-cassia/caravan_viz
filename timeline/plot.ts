@@ -3,10 +3,10 @@
 interface Run {
   id: number;
   seed: number;
-  result: number;
-  placeId: number;
-  startAt: number;
-  finishAt: number;
+  output: number;
+  rank: number;
+  start_at: number;
+  finish_at: number;
 }
 
 class BoxPlot {
@@ -35,10 +35,10 @@ class BoxPlot {
   public build(url: string) {
     d3.json(url, (error: any, data: Run[]):void => {
       
-      this.xScale.domain( data.sort( (a,b)=>{return a.placeId-b.placeId;} ).map( (d)=>{return d.placeId.toString();} ) );
+      this.xScale.domain( data.sort( (a,b)=>{return a.rank-b.rank;} ).map( (d)=>{return d.rank.toString();} ) );
       this.yScale.domain([
         0.0,
-        d3.max(data, (d)=>{ return d.finishAt;})
+        d3.max(data, (d)=>{ return d.finish_at;})
       ]);
       
       this.buildAxis();
@@ -49,16 +49,16 @@ class BoxPlot {
         .data(data)
       .enter().append("rect")
         .attr("class", "bar")
-        .attr("x", (d) => { return this.xScale(d.placeId.toString()); })
+        .attr("x", (d) => { return this.xScale(d.rank.toString()); })
         .attr("width", this.xScale.rangeBand())
-        .attr("y", (d) => { return this.yScale(d.startAt); })
-        .attr("height", (d) => { return this.yScale(d.finishAt - d.startAt); })
+        .attr("y", (d) => { return this.yScale(d.start_at); })
+        .attr("height", (d) => { return this.yScale(d.finish_at - d.start_at); })
         .attr("rx", 4).attr("ry", 4)
         .style("opacity", .8)
         .on("mouseover", function(d) {
           d3.select(this).style("opacity", 1);
           var t: string =
-            `id: ${d.id}, time: ${d.startAt} - ${d.finishAt}, place: ${d.placeId}, results: ${d.results}`;
+            `id: ${d.id}, time: ${d.start_at} - ${d.finish_at}, place: ${d.rank}, output: ${d.output}`;
           tooltip.style("visibility", "visible")
             .text(t);
         })

@@ -1,5 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
-var BoxPlot = (function () {
+var BoxPlot = /** @class */ (function () {
     function BoxPlot(elementId) {
         var margin = { top: 20, right: 20, bottom: 30, left: 40 };
         this.width = 1000 - margin.left - margin.right,
@@ -15,10 +15,10 @@ var BoxPlot = (function () {
     BoxPlot.prototype.build = function (url) {
         var _this = this;
         d3.json(url, function (error, data) {
-            _this.xScale.domain(data.sort(function (a, b) { return a.placeId - b.placeId; }).map(function (d) { return d.placeId.toString(); }));
+            _this.xScale.domain(data.sort(function (a, b) { return a.rank - b.rank; }).map(function (d) { return d.rank.toString(); }));
             _this.yScale.domain([
                 0.0,
-                d3.max(data, function (d) { return d.finishAt; })
+                d3.max(data, function (d) { return d.finish_at; })
             ]);
             _this.buildAxis();
             var tooltip = d3.select('span#tooltip');
@@ -26,15 +26,15 @@ var BoxPlot = (function () {
                 .data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function (d) { return _this.xScale(d.placeId.toString()); })
+                .attr("x", function (d) { return _this.xScale(d.rank.toString()); })
                 .attr("width", _this.xScale.rangeBand())
-                .attr("y", function (d) { return _this.yScale(d.startAt); })
-                .attr("height", function (d) { return _this.yScale(d.finishAt - d.startAt); })
+                .attr("y", function (d) { return _this.yScale(d.start_at); })
+                .attr("height", function (d) { return _this.yScale(d.finish_at - d.start_at); })
                 .attr("rx", 4).attr("ry", 4)
                 .style("opacity", .8)
                 .on("mouseover", function (d) {
                 d3.select(this).style("opacity", 1);
-                var t = "id: " + d.id + ", time: " + d.startAt + " - " + d.finishAt + ", place: " + d.placeId + ", results: " + d.results;
+                var t = "id: " + d.id + ", time: " + d.start_at + " - " + d.finish_at + ", place: " + d.rank + ", output: " + d.output;
                 tooltip.style("visibility", "visible")
                     .text(t);
             })
