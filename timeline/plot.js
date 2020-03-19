@@ -1,5 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
-var BoxPlot = /** @class */ (function () {
+var BoxPlot = (function () {
     function BoxPlot(elementId) {
         var margin = { top: 20, right: 20, bottom: 30, left: 40 };
         this.width = 1000 - margin.left - margin.right,
@@ -34,7 +34,7 @@ var BoxPlot = /** @class */ (function () {
                 .style("opacity", .8)
                 .on("mouseover", function (d) {
                 d3.select(this).style("opacity", 1);
-                var t = "id: " + d.id + ", time: " + d.start_at + " - " + d.finish_at + ", place: " + d.rank + ", output: " + JSON.stringify(d.output);
+                var t = "id: " + d.id + ", time: " + d.start_at + " - " + d.finish_at + ", rank: " + d.rank + ", output: " + JSON.stringify(d.output);
                 tooltip.style("visibility", "visible")
                     .text(t);
             })
@@ -47,7 +47,7 @@ var BoxPlot = /** @class */ (function () {
                 d3.select(this).style("opacity", .8);
                 tooltip.style("visibility", "hidden");
             });
-            _this.updatePlaceRange();
+            _this.updateRankRange();
         });
     };
     BoxPlot.prototype.buildAxis = function () {
@@ -67,10 +67,10 @@ var BoxPlot = /** @class */ (function () {
             .style("text-anchor", "end")
             .text("Time");
     };
-    BoxPlot.prototype.updatePlaceRange = function () {
+    BoxPlot.prototype.updateRankRange = function () {
         var domain = this.xScale.domain();
         var s = domain[0] + "-" + domain[domain.length - 1];
-        d3.select('#place_range_input')[0][0].value = s;
+        d3.select('#rank_range_input')[0][0].value = s;
     };
     return BoxPlot;
 }());
@@ -78,15 +78,15 @@ document.body.onload = function () {
     d3.json('/filling_rate', function (err, data) {
         d3.select('#num_runs').text("# of Runs: " + data["num_runs"]);
         d3.select('#filling_rate').text("filling rate: " + data["filling_rate"] * 100.0 + " %");
-        d3.select('#place_range').text("place range: " + data["place_range"][0] + " - " + data["place_range"][1]);
-        d3.select('#num_consumer_places').text("# of consumer places: " + data["num_consumer_places"]);
+        d3.select('#rank_range').text("rank range: " + data["rank_range"][0] + " - " + data["rank_range"][1]);
+        d3.select('#num_consumer_ranks').text("# of consumer ranks: " + data["num_consumer_ranks"]);
         d3.select('#max_finish_at').text("max finish at: " + data["max_finish_at"]);
     });
     var box = new BoxPlot('#plot');
     box.build('/runs');
 };
-d3.select('#place_range_update').on('click', function () {
-    var url = '/runs?place=' + d3.select('#place_range_input')[0][0].value;
+d3.select('#rank_range_update').on('click', function () {
+    var url = '/runs?rank=' + d3.select('#rank_range_input')[0][0].value;
     d3.select('#plot').selectAll("*").remove();
     var box = new BoxPlot('#plot');
     box.build(url);

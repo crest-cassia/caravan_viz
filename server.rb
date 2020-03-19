@@ -85,7 +85,7 @@ def calc_filling_rate_and_rank_range(tasks)
   {filling_rate: filling_rate, rank_range: rank_range, num_consumer_ranks: num_ranks, num_runs: tasks.size, max_finish_at: max_finish_at}
 end
 
-def calc_filling_rate_and_place_range2(tasks, rank)
+def calc_filling_rate_and_rank_range2(tasks, rank)
   rank2_runs = tasks.select {|t| t["rank"] == rank }
   min_start_at = rank2_runs.map {|r| r["start_at"] }.min
   max_finish_at = rank2_runs.map {|r| r["finish_at"] }.max

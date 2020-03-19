@@ -58,7 +58,7 @@ class BoxPlot {
         .on("mouseover", function(d) {
           d3.select(this).style("opacity", 1);
           var t: string =
-            `id: ${d.id}, time: ${d.start_at} - ${d.finish_at}, place: ${d.rank}, output: ${JSON.stringify(d.output)}`;
+            `id: ${d.id}, time: ${d.start_at} - ${d.finish_at}, rank: ${d.rank}, output: ${JSON.stringify(d.output)}`;
           tooltip.style("visibility", "visible")
             .text(t);
         })
@@ -71,7 +71,7 @@ class BoxPlot {
           d3.select(this).style("opacity", .8);
           tooltip.style("visibility", "hidden");
         });
-      this.updatePlaceRange();
+      this.updateRankRange();
     });
   }
   
@@ -93,10 +93,10 @@ class BoxPlot {
       .text("Time");
   }
 
-  private updatePlaceRange() {
+  private updateRankRange() {
     var domain = this.xScale.domain();
     var s = `${domain[0]}-${domain[domain.length-1]}`;
-    d3.select('#place_range_input')[0][0].value = s;
+    d3.select('#rank_range_input')[0][0].value = s;
   }
 }
 
@@ -104,16 +104,16 @@ document.body.onload = function() {
   d3.json('/filling_rate', (err:any, data) => {
     d3.select('#num_runs').text(`# of Runs: ${data["num_runs"]}`);
     d3.select('#filling_rate').text(`filling rate: ${data["filling_rate"]*100.0} %`);
-    d3.select('#place_range').text(`place range: ${data["place_range"][0]} - ${data["place_range"][1]}`);
-    d3.select('#num_consumer_places').text(`# of consumer places: ${data["num_consumer_places"]}`);
+    d3.select('#rank_range').text(`rank range: ${data["rank_range"][0]} - ${data["rank_range"][1]}`);
+    d3.select('#num_consumer_ranks').text(`# of consumer ranks: ${data["num_consumer_ranks"]}`);
     d3.select('#max_finish_at').text(`max finish at: ${data["max_finish_at"]}`);
   });
   var box = new BoxPlot('#plot');
   box.build('/runs');
 }
 
-d3.select('#place_range_update').on('click', function() {
-  var url = '/runs?place=' + d3.select('#place_range_input')[0][0].value;
+d3.select('#rank_range_update').on('click', function() {
+  var url = '/runs?rank=' + d3.select('#rank_range_input')[0][0].value;
   d3.select('#plot').selectAll("*").remove();
   var box = new BoxPlot('#plot');
   box.build(url);
