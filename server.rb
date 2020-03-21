@@ -82,7 +82,9 @@ def calc_filling_rate_and_rank_range(tasks)
   duration = tasks.inject(0) {|sum,run| sum + (run["finish_at"] - run["start_at"]) }
   filling_rate = duration.to_f / ((max_finish_at - min_start_at) * num_ranks)
   rank_range = ranks.minmax
-  {filling_rate: filling_rate, rank_range: rank_range, num_consumer_ranks: num_ranks, num_runs: tasks.size, max_finish_at: max_finish_at}
+  filename = ARGV[0]
+  file_info = File.mtime(filename).to_s
+  {file: filename, file_info: file_info, filling_rate: filling_rate, rank_range: rank_range, num_consumer_ranks: num_ranks, num_runs: tasks.size, max_finish_at: max_finish_at}
 end
 
 def calc_filling_rate_and_rank_range2(tasks, rank)

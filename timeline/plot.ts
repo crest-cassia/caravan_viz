@@ -102,6 +102,7 @@ class BoxPlot {
 
 document.body.onload = function() {
   d3.json('/filling_rate', (err:any, data) => {
+    d3.select('#input_file').text(`File: ${data["file"]} (${data["file_info"]})`);
     d3.select('#num_runs').text(`# of Runs: ${data["num_runs"]}`);
     d3.select('#filling_rate').text(`filling rate: ${data["filling_rate"]*100.0} %`);
     d3.select('#rank_range').text(`rank range: ${data["rank_range"][0]} - ${data["rank_range"][1]}`);
