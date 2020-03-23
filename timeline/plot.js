@@ -29,7 +29,7 @@ class BoxPlot {
 
       this.buildAxis();
 
-      var tooltip = d3.select('span#tooltip');
+      const tooltip = d3.select('span#tooltip');
 
       this.svg.selectAll(".bar")
         .data(data)
@@ -52,7 +52,7 @@ class BoxPlot {
             .style("top", (d3.event.pageY-20)+"px")
             .style("left", (d3.event.pageX+10)+"px");
         })
-        .on("mouseout", function(d){
+        .on("mouseout", function(d) {
           d3.select(this).style("opacity", .8);
           tooltip.style("visibility", "hidden");
         });
@@ -61,8 +61,8 @@ class BoxPlot {
   }
 
   buildAxis() {
-    var xAxis = d3.svg.axis().scale(this.xScale).orient("bottom");
-    var yAxis = d3.svg.axis().scale(this.yScale).orient("left");
+    const xAxis = d3.svg.axis().scale(this.xScale).orient("bottom");
+    const yAxis = d3.svg.axis().scale(this.yScale).orient("left");
     this.svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + this.height + ")")
@@ -79,14 +79,14 @@ class BoxPlot {
   }
 
   updateRankRange() {
-    var domain = this.xScale.domain();
-    var s = `${domain[0]}-${domain[domain.length-1]}`;
+    const domain = this.xScale.domain();
+    const s = `${domain[0]}-${domain[domain.length-1]}`;
     d3.select('#rank_range_input')[0][0].value = s;
   }
 }
 
-document.body.onload = function () {
-    d3.json('/filling_rate', function (err, data) {
+document.body.onload = () => {
+    d3.json('/filling_rate', (err, data) => {
         d3.select('#input_file').text("File: " + data["file"] + " (" + data["file_info"] + ")");
         d3.select('#num_runs').text("# of Runs: " + data["num_runs"]);
         d3.select('#filling_rate').text("filling rate: " + data["filling_rate"] * 100.0 + " %");
@@ -97,7 +97,7 @@ document.body.onload = function () {
     var box = new BoxPlot('#plot');
     box.build('/runs');
 };
-d3.select('#rank_range_update').on('click', function () {
+d3.select('#rank_range_update').on('click', () => {
     var url = '/runs?rank=' + d3.select('#rank_range_input')[0][0].value;
     d3.select('#plot').selectAll("*").remove();
     var box = new BoxPlot('#plot');
