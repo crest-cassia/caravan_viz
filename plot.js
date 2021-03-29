@@ -43,7 +43,8 @@ class BoxPlot {
         .style("opacity", .8)
         .on("mouseover", function(d) {
           d3.select(this).style("opacity", 1);
-          const t = `id: ${d.id}, time: ${d.start_at} - ${d.finish_at}, rank: ${d.rank}, output: ${JSON.stringify(d.output)}`;
+          let t = `task_id: ${d.task_id}, time: ${d.start_at} - ${d.finish_at}, rank: ${d.rank}, output: ${JSON.stringify(d.output)}`
+          if (d.input) { t += `, input: ${JSON.stringify(d.input)}`; }
           tooltip.style("visibility", "visible")
             .text(t);
         })
